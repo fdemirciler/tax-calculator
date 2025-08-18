@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tax App Tests</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 2rem; }
+    h1 { margin: 0 0 1rem; font-size: 1.5rem; }
+    .meta { color: #555; margin-bottom: 1rem; }
+    .summary { margin: 1rem 0; padding: 0.75rem 1rem; border-radius: 8px; background: #f3f4f6; }
+    .pass { color: #0a7f00; }
+    .fail { color: #b00020; }
+    pre { background: #0b1020; color: #e6edf3; padding: 1rem; border-radius: 8px; overflow: auto; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+    a { color: #2563eb; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <h1>Tax App Tests</h1>
+  <div class="meta">Loads the production <code>script.js</code> and runs pure calculations via <code>window.__taxApp</code>.</div>
+  <div class="summary" id="summary">Running…</div>
+  <pre id="output" aria-live="polite"></pre>
+
+  <!-- Load the production logic first -->
+  <script src="../script.js" defer></script>
+  <!-- Then run the tests -->
+  <script src="./tests.js" defer></script>
+</body>
+</html>

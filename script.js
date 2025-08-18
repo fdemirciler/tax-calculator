@@ -132,24 +132,101 @@ const loadFromLocalStorage = () => {
   }
 };
 
-// Update the results display
-const updateResults = (income) => {
+// Pure compute function for results (no DOM)
+const computeResults = (income) => {
+  const incomeRounded = Math.round(income || 0);
+  if (incomeRounded <= 0) {
+    return {
+      incomeRounded,
+      displayedTax: 0,
+      displayGeneral: 0,
+      displayLabour: 0,
+      netIncomeDisplay: 0,
+      effectiveTaxRate: 0,
+      theoretical: { tax: 0, general: 0, labour: 0 }
+    };
+  }
+
   const tax = calculateTax(income);
   const generalCredit = calculateGeneralTaxCredit(income);
   const labourCredit = calculateLabourTaxCredit(income);
-  const netIncome = income + generalCredit + labourCredit - tax;
-  // Effective Tax Rate = (Tax amount - total credits) / Gross income
-  const totalCredits = generalCredit + labourCredit;
-  const effectiveTaxRate = income > 0 ? Math.round(((tax - totalCredits) / income) * 100) : 0;
 
-  if (taxRateElement) taxRateElement.textContent = `${effectiveTaxRate}%`;
-  if (taxAmountElement) taxAmountElement.textContent = formatCurrency(-tax);
-  if (generalTaxCreditElement) generalTaxCreditElement.textContent = formatCurrency(generalCredit);
-  if (labourTaxCreditElement) labourTaxCreditElement.textContent = formatCurrency(labourCredit);
-  if (netIncomeElement) netIncomeElement.textContent = formatCurrency(netIncome);
+  const displayedTax = Math.round(tax);
+
+  let displayLabour = Math.round(labourCredit);
+  let displayGeneral = Math.round(generalCredit);
+
+  if ((generalCredit + labourCredit) > tax) {
+    const appliedLabourFloat = Math.min(labourCredit, tax);
+    const appliedGeneralFloat = Math.min(generalCredit, tax - appliedLabourFloat);
+
+    displayLabour = Math.round(appliedLabourFloat);
+    displayGeneral = Math.round(appliedGeneralFloat);
+
+    let sum = displayLabour + displayGeneral;
+    if (sum !== displayedTax) {
+      const generalCap = Math.round(appliedGeneralFloat);
+      displayGeneral = Math.min(generalCap, Math.max(0, displayedTax - displayLabour));
+      sum = displayLabour + displayGeneral;
+    }
+    if (sum !== displayedTax) {
+      const labourCap = Math.round(appliedLabourFloat);
+      displayLabour = Math.min(labourCap, Math.max(0, displayedTax - displayGeneral));
+      const over = (displayLabour + displayGeneral) - displayedTax;
+      if (over > 0) displayGeneral = Math.max(0, displayGeneral - over);
+    }
+  }
+
+  // Final safety: rounding must not make credits exceed rounded tax
+  if ((displayLabour + displayGeneral) > displayedTax) {
+    const over = (displayLabour + displayGeneral) - displayedTax;
+    // Prefer adjusting General first, aligning with application order
+    displayGeneral = Math.max(0, displayGeneral - over);
+    if ((displayLabour + displayGeneral) > displayedTax) {
+      displayLabour = Math.max(0, displayedTax - displayGeneral);
+    }
+  }
+
+  const netIncomeDisplay = incomeRounded - displayedTax + displayLabour + displayGeneral;
+  const effectiveBase = Math.max(0, displayedTax - (displayLabour + displayGeneral));
+  const effectiveTaxRate = incomeRounded > 0 ? Math.round((effectiveBase / incomeRounded) * 100) : 0;
+
+  return {
+    incomeRounded,
+    displayedTax,
+    displayGeneral,
+    displayLabour,
+    netIncomeDisplay,
+    effectiveTaxRate,
+    theoretical: { tax, general: generalCredit, labour: labourCredit }
+  };
+};
+
+// Expose compute and calculators for tests
+if (typeof window !== 'undefined') {
+  window.__taxApp = Object.assign({}, window.__taxApp || {}, {
+    computeResults,
+    calculateTax,
+    calculateGeneralTaxCredit,
+    calculateLabourTaxCredit,
+    INCOME_TAX_BRACKETS,
+    GENERAL_TAX_CREDIT_2025,
+    LABOUR_TAX_CREDIT_2025,
+  });
+}
+
+// Update the results display
+const updateResults = (income) => {
+  const r = computeResults(income);
+
+  if (taxRateElement) taxRateElement.textContent = `${r.effectiveTaxRate}%`;
+  if (taxAmountElement) taxAmountElement.textContent = formatCurrency(r.displayedTax === 0 ? 0 : -r.displayedTax); // avoid -€0
+  if (generalTaxCreditElement) generalTaxCreditElement.textContent = formatCurrency(r.displayGeneral);
+  if (labourTaxCreditElement) labourTaxCreditElement.textContent = formatCurrency(r.displayLabour);
+  if (netIncomeElement) netIncomeElement.textContent = formatCurrency(r.netIncomeDisplay);
 
   // Save to localStorage
-  saveToLocalStorage(income);
+  saveToLocalStorage(r.incomeRounded);
 };
 
 // Debounce function
@@ -197,6 +274,7 @@ const handleKeyboardNavigation = (e) => {
 
 // Populate tax brackets table
 const populateTaxBrackets = () => {
+  if (!taxBracketsBody) return;
   taxBracketsBody.innerHTML = INCOME_TAX_BRACKETS.map(bracket => `
     <tr>
       <td>${formatNumber(bracket.low)}</td>
@@ -295,13 +373,19 @@ const initCollapsibles = () => {
   });
 };
 
-// Event listeners
-incomeInput.addEventListener('input', debounce(handleIncomeInput, 300));
-incomeInput.addEventListener('keydown', handleKeyboardNavigation);
+// Event listeners (guard for non-app contexts like tests)
+if (incomeInput) {
+  incomeInput.addEventListener('input', debounce(handleIncomeInput, 300));
+  incomeInput.addEventListener('keydown', handleKeyboardNavigation);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-  loadFromLocalStorage();
-  populateTaxBrackets();
-  populateCreditBrackets();
+  const hasAppDom = !!incomeInput;
+  if (hasAppDom) {
+    loadFromLocalStorage();
+    populateTaxBrackets();
+    populateCreditBrackets();
+  }
   initCollapsibles();
-  if (!incomeInput.value) updateResults(0);
+  if (hasAppDom && !incomeInput.value) updateResults(0);
 });
