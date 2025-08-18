@@ -11,19 +11,38 @@ A simple and efficient tax calculator built with vanilla JavaScript, HTML, and C
 - Euro currency formatting
 - Mobile-responsive design
 - Local storage for persistence
-- Keyboard navigation support
+- Tax credit brackets (General and Labour)
+- English labels with Dutch names in parentheses to match the UI
 
-## Tax Brackets as of 2025
+## Income Tax Brackets (Inkomstenbelasting) as of 2025
 
 - 35.82% : €0 - 38,441
 - 37.48% : €38,442 - 76,817
 - 49.50% : €76,818 - inf
-- 
+
+## Tax Credit Brackets as of 2025
+
+Values shown are for individuals under AOW age.
+
+### General Tax Credit (Algemene heffingskorting)
+
+- Income ≤ €28,406: €3,068
+- €28,406 – €76,817: €3,068 − 6.337% × (income − €28,406)
+- ≥ €76,817: €0
+
+### Labour Tax Credit (Arbeidskorting)
+
+- Income ≤ €12,169: 8.053% × income
+- €12,169 – €26,288: €980 + 30.030% × (income − €12,169)
+- €26,288 – €43,071: €5,220 + 2.258% × (income − €26,288)
+- €43,071 – €129,078: €5,599 − 6.510% × (income − €43,071)
+- ≥ €129,078: €0
+
 ## Usage
 
 1. Enter your annual gross income
 2. View your effective tax rate, tax amount, and net income
-3. Reference the tax brackets table for detailed rate information
+3. Reference the income tax and tax credit tables for detailed information
 
 ## Technologies
 

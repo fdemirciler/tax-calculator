@@ -26,7 +26,7 @@
           <path d="M12 18h.01"></path>
           <path d="M8 18h.01"></path>
         </svg>
-        <h1>Tax Calculator</h1>
+        <h1>Tax Calculator <h5>2025</h5> </h1>
       </header>
 
       <div class="input-section">
@@ -41,23 +41,34 @@
       <div class="results-section">
         <div class="result-card">
           <div class="result-item">
-            <span class="label">Effective Tax Rate</span>
-            <span class="value" id="taxRate">0%</span>
+            <span class="label">Income Tax</span>
+            <span class="value" id="taxAmount">€0</span>
           </div>
           <div class="result-item">
-            <span class="label">Tax Amount</span>
-            <span class="value" id="taxAmount">€0,00</span>
+            <span class="label">General Tax Credit <span style="font-size: 10px;">(Algemene Heffingskorting)</span></span>
+            <span class="value" id="generalTaxCredit">€0</span>
+          </div>
+          <div class="result-item">
+            <span class="label">Labour Tax Credit <span style="font-size: 10px;">(Arbeidskorting)</span></span>
+            <span class="value" id="labourTaxCredit">€0</span>
           </div>
           <div class="result-item highlight">
             <span class="label">Net Income</span>
-            <span class="value" id="netIncome">€0,00</span>
+            <span class="value" id="netIncome">€0</span>
+          </div>
+          <div class="result-item">
+            <span class="label">Effective Tax Rate</span>
+            <span class="value" id="taxRate">0%</span>
           </div>
         </div>
       </div>
 
-      <section class="tax-brackets">
-        <h2 class="section-title">Tax Brackets</h2>
-        <div class="table-wrapper">
+      <section class="tax-brackets collapsible collapsed">
+        <h2 class="section-title" role="button" tabindex="0" aria-expanded="false" aria-controls="taxBracketsContent">
+          <span>Income Tax Brackets</span>
+          <svg class="toggle-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </h2>
+        <div class="table-wrapper" id="taxBracketsContent">
           <table>
             <thead>
               <tr>
@@ -67,6 +78,42 @@
               </tr>
             </thead>
             <tbody id="taxBracketsBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="tax-brackets collapsible collapsed">
+        <h2 class="section-title" role="button" tabindex="0" aria-expanded="false" aria-controls="generalCreditContent">
+          <span>General Tax Credit Brackets</span>
+          <svg class="toggle-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </h2>
+        <div class="table-wrapper" id="generalCreditContent">
+          <table>
+            <thead>
+              <tr>
+                <th>Income Range</th>
+                <th>Formula / Value</th>
+              </tr>
+            </thead>
+            <tbody id="generalCreditBracketsBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="tax-brackets collapsible collapsed">
+        <h2 class="section-title" role="button" tabindex="0" aria-expanded="false" aria-controls="labourCreditContent">
+          <span>Labour Tax Credit Brackets</span>
+          <svg class="toggle-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </h2>
+        <div class="table-wrapper" id="labourCreditContent">
+          <table>
+            <thead>
+              <tr>
+                <th>Income Range</th>
+                <th>Formula / Value</th>
+              </tr>
+            </thead>
+            <tbody id="labourCreditBracketsBody"></tbody>
           </table>
         </div>
       </section>

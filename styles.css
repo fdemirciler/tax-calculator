@@ -42,15 +42,13 @@
 html, body {
   height: 100%;
   margin: 0;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
   padding: var(--spacing-sm);
   color: var(--color-gray-800);
   line-height: 1.5;
@@ -59,10 +57,9 @@ body {
 .container {
   width: 100%;
   max-width: 32rem;
-  height: 100%;
-  padding: var(--spacing-lg);
-  display: flex;
-  align-items: center;
+  margin: 0 auto;
+  padding: var(--spacing-2xl) var(--spacing-lg);
+  display: block;
 }
 
 .calculator-card {
@@ -73,7 +70,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-lg);
-  height: min(800px, 100%);
+  height: auto;
   width: 100%;
 }
 
@@ -179,11 +176,11 @@ h1 {
 }
 
 .result-item.highlight {
-  background: white;
-  margin: 0 calc(var(--spacing-lg) * -1);
-  padding: var(--spacing-lg);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
+  background: transparent;
+  margin: 0;
+  padding: var(--spacing-md) 0;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .label {
@@ -206,10 +203,8 @@ h1 {
   border: 1px solid var(--color-gray-200);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
+  display: block;
+  margin-bottom: var(--spacing-lg);
 }
 
 .section-title {
@@ -219,6 +214,24 @@ h1 {
   padding: var(--spacing-lg);
   border-bottom: 1px solid var(--color-gray-200);
   background: var(--color-gray-50);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Collapsible controls */
+.toggle-icon {
+  transition: transform 0.2s ease;
+}
+
+.collapsible.collapsed .table-wrapper {
+  display: none;
+}
+
+.collapsible:not(.collapsed) .toggle-icon {
+  transform: rotate(180deg);
 }
 
 .table-wrapper {
@@ -264,12 +277,12 @@ td:last-child {
   
   .calculator-card {
     padding: var(--spacing-lg);
-    height: 100%;
+    height: auto;
     border-radius: var(--spacing-sm);
   }
   
   .result-item.highlight {
-    margin: 0 calc(var(--spacing-lg) * -1);
+    margin: 0; /* keep consistent on mobile */
   }
   
   .floating-label-group input {
