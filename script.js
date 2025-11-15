@@ -35,6 +35,7 @@ const incomeInput = document.getElementById('income');
 const taxRateElement = document.getElementById('taxRate');
 const taxAmountElement = document.getElementById('taxAmount');
 const netIncomeElement = document.getElementById('netIncome');
+const monthlyIncomeElement = document.getElementById('monthlyIncome');
 const taxBracketsBody = document.getElementById('taxBracketsBody');
 const generalTaxCreditElement = document.getElementById('generalTaxCredit');
 const labourTaxCreditElement = document.getElementById('labourTaxCredit');
@@ -142,6 +143,7 @@ const computeResults = (income) => {
       displayGeneral: 0,
       displayLabour: 0,
       netIncomeDisplay: 0,
+      monthlyIncomeDisplay: 0,
       effectiveTaxRate: 0,
       theoretical: { tax: 0, general: 0, labour: 0 }
     };
@@ -188,6 +190,7 @@ const computeResults = (income) => {
   }
 
   const netIncomeDisplay = incomeRounded - displayedTax + displayLabour + displayGeneral;
+  const monthlyIncomeDisplay = Math.round(netIncomeDisplay / 12);
   const effectiveBase = Math.max(0, displayedTax - (displayLabour + displayGeneral));
   const effectiveTaxRate = incomeRounded > 0 ? Math.round((effectiveBase / incomeRounded) * 100) : 0;
 
@@ -197,6 +200,7 @@ const computeResults = (income) => {
     displayGeneral,
     displayLabour,
     netIncomeDisplay,
+    monthlyIncomeDisplay,
     effectiveTaxRate,
     theoretical: { tax, general: generalCredit, labour: labourCredit }
   };
@@ -224,6 +228,7 @@ const updateResults = (income) => {
   if (generalTaxCreditElement) generalTaxCreditElement.textContent = formatCurrency(r.displayGeneral);
   if (labourTaxCreditElement) labourTaxCreditElement.textContent = formatCurrency(r.displayLabour);
   if (netIncomeElement) netIncomeElement.textContent = formatCurrency(r.netIncomeDisplay);
+  if (monthlyIncomeElement) monthlyIncomeElement.textContent = formatCurrency(r.monthlyIncomeDisplay);
 
   // Save to localStorage
   saveToLocalStorage(r.incomeRounded);

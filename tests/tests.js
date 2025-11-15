@@ -40,6 +40,7 @@
       assert('0 income -> displayLabour=0', r.displayLabour === 0);
       assert('0 income -> netIncomeDisplay=0', r.netIncomeDisplay === 0);
       assert('0 income -> ETR=0%', r.effectiveTaxRate === 0);
+      assert('0 income -> monthlyIncomeDisplay=0', r.monthlyIncomeDisplay === 0);
     }
 
     // --- Core thresholds and typical amounts ---
@@ -73,7 +74,7 @@
         r.effectiveTaxRate >= 0 && r.effectiveTaxRate <= 100
       );
       assert(`${namePrefix} -> All displayed values are whole euros`,
-        Number.isInteger(r.displayedTax) && Number.isInteger(r.displayGeneral) && Number.isInteger(r.displayLabour) && Number.isInteger(r.netIncomeDisplay)
+        Number.isInteger(r.displayedTax) && Number.isInteger(r.displayGeneral) && Number.isInteger(r.displayLabour) && Number.isInteger(r.netIncomeDisplay) && Number.isInteger(r.monthlyIncomeDisplay)
       );
       const effectiveBase = Math.max(0, r.displayedTax - (r.displayLabour + r.displayGeneral));
       const expectedPct = income > 0 ? Math.round((effectiveBase / Math.round(income)) * 100) : 0;
@@ -83,6 +84,7 @@
       const expectedNet = Math.round(income) - r.displayedTax + r.displayLabour + r.displayGeneral;
       assert(`${namePrefix} -> Net income arithmetic`, r.netIncomeDisplay === expectedNet);
       assert(`${namePrefix} -> Net income non-negative`, r.netIncomeDisplay >= 0);
+      assert(`${namePrefix} -> Monthly income derived from net`, r.monthlyIncomeDisplay === Math.round(r.netIncomeDisplay / 12));
 
       // When credits exceed tax theoretically, applied credits should equal displayed tax
       const theoreticalSum = r.theoretical.general + r.theoretical.labour;
@@ -100,6 +102,7 @@
       assert('negative income -> displayedTax=0', r.displayedTax === 0);
       assert('negative income -> credits=0', r.displayGeneral === 0 && r.displayLabour === 0);
       assert('negative income -> ETR=0%', r.effectiveTaxRate === 0);
+      assert('negative income -> monthlyIncomeDisplay=0', r.monthlyIncomeDisplay === 0);
     }
 
     // Render summary
