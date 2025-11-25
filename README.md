@@ -26,4 +26,3 @@ A simple and efficient tax calculator built with React and TypeScript.
 - `App.tsx`: Main application component
 - `components/`: UI components
 - `utils/`: Tax calculation logic
-
