@@ -1,0 +1,5 @@
+{
+  "name": "Dutch Tax Calculator 2025",
+  "description": "A high-precision Dutch income tax calculator for the 2025 fiscal year. Features real-time calculation of Income Tax, General Tax Credit, and Labour Tax Credit with instant visual feedback.",
+  "requestFramePermissions": []
+}
