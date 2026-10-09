@@ -68,7 +68,7 @@ const App: React.FC = () => {
             </div>
             <div>
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Dutch Income Tax Calculator</h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">Fiscal Year 2025</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">Fiscal Year 2026</p>
             </div>
           </div>
           
@@ -95,7 +95,7 @@ const App: React.FC = () => {
         {/* Footer */}
         <footer className="mt-12 text-center text-sm text-gray-400 dark:text-gray-600 pb-8 transition-colors duration-200">
           <p>
-            This calculator provides estimates based on 2025 tax brackets. 
+            This calculator provides estimates based on 2026 tax brackets. 
             Actual tax liability may vary based on specific circumstances.
           </p>
         </footer>

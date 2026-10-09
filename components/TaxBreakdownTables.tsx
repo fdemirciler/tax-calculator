@@ -39,7 +39,7 @@ const TaxBreakdownTables: React.FC = () => {
 
   return (
     <div className="mt-8 space-y-4">
-      <CollapsibleSection title="Income Tax Brackets (2025)">
+      <CollapsibleSection title="Income Tax Brackets (2026)">
         <table className="min-w-full text-sm text-left">
           <thead className="bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-medium border-b border-gray-200 dark:border-gray-700">
             <tr>
@@ -61,74 +61,3 @@ const TaxBreakdownTables: React.FC = () => {
           </tbody>
         </table>
       </CollapsibleSection>
-
-      <CollapsibleSection title="General Tax Credit Brackets">
-        <table className="min-w-full text-sm text-left">
-          <thead className="bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-medium border-b border-gray-200 dark:border-gray-700">
-            <tr>
-              <th className="px-4 py-2 w-1/3">Range</th>
-              <th className="px-4 py-2">Formula / Value</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
-            <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-800/50">
-              <td className="px-4 py-2 text-gray-900 dark:text-gray-200">≤ {formatCurrency(g.phaseOutStart)}</td>
-              <td className="px-4 py-2 text-gray-600 dark:text-gray-400 font-mono text-xs">{formatCurrency(g.cap)}</td>
-            </tr>
-            <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-800/50">
-              <td className="px-4 py-2 text-gray-900 dark:text-gray-200">{formatCurrency(g.phaseOutStart)} – {formatCurrency(g.phaseOutEnd)}</td>
-              <td className="px-4 py-2 text-gray-600 dark:text-gray-400 font-mono text-xs">
-                {formatCurrency(g.cap)} − {formatPercentFixed(g.phaseOutRate)} × (income − {formatCurrency(g.phaseOutStart)})
-              </td>
-            </tr>
-            <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-800/50">
-              <td className="px-4 py-2 text-gray-900 dark:text-gray-200">≥ {formatCurrency(g.phaseOutEnd)}</td>
-              <td className="px-4 py-2 text-gray-600 dark:text-gray-400 font-mono text-xs">€0</td>
-            </tr>
-          </tbody>
-        </table>
-      </CollapsibleSection>
-
-      <CollapsibleSection title="Labour Tax Credit Brackets">
-        <table className="min-w-full text-sm text-left">
-          <thead className="bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-medium border-b border-gray-200 dark:border-gray-700">
-            <tr>
-              <th className="px-4 py-2 w-1/3">Range</th>
-              <th className="px-4 py-2">Formula / Value</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
-            <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-800/50">
-              <td className="px-4 py-2 text-gray-900 dark:text-gray-200">≤ {formatCurrency(l.t1End)}</td>
-              <td className="px-4 py-2 text-gray-600 dark:text-gray-400 font-mono text-xs">{formatPercentFixed(l.t1Rate)} × income</td>
-            </tr>
-            <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-800/50">
-              <td className="px-4 py-2 text-gray-900 dark:text-gray-200">{formatCurrency(l.t2Start)} – {formatCurrency(l.t2End)}</td>
-              <td className="px-4 py-2 text-gray-600 dark:text-gray-400 font-mono text-xs">
-                {formatCurrency(l_base1)} + {formatPercentFixed(l.t2Rate)} × (income − {formatCurrency(l.t2Start)})
-              </td>
-            </tr>
-            <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-800/50">
-              <td className="px-4 py-2 text-gray-900 dark:text-gray-200">{formatCurrency(l.t3Start)} – {formatCurrency(l.t3End)}</td>
-              <td className="px-4 py-2 text-gray-600 dark:text-gray-400 font-mono text-xs">
-                {formatCurrency(l_base2)} + {formatPercentFixed(l.t3Rate)} × (income − {formatCurrency(l.t3Start)})
-              </td>
-            </tr>
-            <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-800/50">
-              <td className="px-4 py-2 text-gray-900 dark:text-gray-200">{formatCurrency(l.t4Start)} – {formatCurrency(l.t4End)}</td>
-              <td className="px-4 py-2 text-gray-600 dark:text-gray-400 font-mono text-xs">
-                {formatCurrency(l.t4Cap)} − {formatPercentFixed(l.t4PhaseOutRate)} × (income − {formatCurrency(l.t4Start)})
-              </td>
-            </tr>
-            <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-800/50">
-              <td className="px-4 py-2 text-gray-900 dark:text-gray-200">≥ {formatCurrency(l.t4End)}</td>
-              <td className="px-4 py-2 text-gray-600 dark:text-gray-400 font-mono text-xs">€0</td>
-            </tr>
-          </tbody>
-        </table>
-      </CollapsibleSection>
-    </div>
-  );
-};
-
-export default TaxBreakdownTables;
