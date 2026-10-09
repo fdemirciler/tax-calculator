@@ -1,4 +1,4 @@
-# Dutch Income Tax Calculator as of 2025
+# Dutch Income Tax Calculator as of 2026
 
 > **Disclaimer**: This application was created as a practice project. The tax brackets and rates used in this calculator are fictional and should not be used for actual tax calculations.
 
